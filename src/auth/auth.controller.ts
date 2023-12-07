@@ -9,7 +9,7 @@ import {
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { Response } from 'express';
-import { CreateUserDto } from 'src/user/dto';
+import { CreateUserDto } from '../user/dto';
 
 @Controller('auth')
 export class AuthController {
