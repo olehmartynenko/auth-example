@@ -120,5 +120,24 @@ describe('App e2e', () => {
           .expectStatus(200);
       });
     });
+
+    describe('Edit user', () => {
+      it('should edit user', () => {
+        const data: UpdateUserDto = {
+          name: 'Oleg',
+          email: 'oleg@gmail.com',
+        };
+        return pactum
+          .spec()
+          .patch('/users/1')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .withBody(data)
+          .expectStatus(200)
+          .expectBodyContains(data.name)
+          .expectBodyContains(data.email);
+      });
+    });
   });
 });
