@@ -6,6 +6,7 @@ import { CreateUserDto, UserDto } from 'src/user/dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { AuthException } from './exceptions/auth.exceptions';
 @Injectable()
 export class AuthService {
   constructor(
@@ -20,13 +21,13 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new ForbiddenException('User with this email does not exist');
+      throw new AuthException('User with this email does not exist');
     }
 
     const valid = await argon.verify(user.password, credentials.password);
 
     if (!valid) {
-      throw new ForbiddenException('Invalid password');
+      throw new AuthException('Invalid password');
     }
 
     return this.signToken(user);
@@ -45,7 +46,7 @@ export class AuthService {
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2002'
       ) {
-        throw new ForbiddenException('User with this email already exists');
+        throw new AuthException('User with this email already exists');
       }
     }
   }
