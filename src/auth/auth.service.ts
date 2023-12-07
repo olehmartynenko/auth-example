@@ -8,8 +8,24 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class AuthService {
   constructor(private prisma: PrismaService) {}
 
-  async login(credentials: AuthDto): Promise<any> {
-    return `Your email is ${credentials.email}`;
+  async login(credentials: AuthDto): Promise<UserDto> {
+    const user = await this.prisma.user.findUnique({
+      where: { email: credentials.email },
+    });
+
+    if (!user) {
+      throw new ForbiddenException('User with this email does not exist');
+    }
+
+    const valid = await argon.verify(user.password, credentials.password);
+
+    if (!valid) {
+      throw new ForbiddenException('Invalid password');
+    }
+
+    delete user.password;
+
+    return user;
   }
 
   async signUp(data: CreateUserDto): Promise<UserDto> {
