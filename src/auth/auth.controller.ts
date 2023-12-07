@@ -2,6 +2,7 @@ import { Body, Controller, Post, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { Response } from 'express';
+import { CreateUserDto } from 'src/user/dto';
 
 @Controller('auth')
 export class AuthController {
@@ -17,7 +18,10 @@ export class AuthController {
   }
 
   @Post('signup')
-  async signUp(@Body() userData, @Res() res: Response): Promise<Response> {
+  async signUp(
+    @Body() userData: CreateUserDto,
+    @Res() res: Response,
+  ): Promise<Response> {
     const token = await this.authService.signUp(userData);
     return res.set({ 'x-access-token': token }).send({ token });
   }
