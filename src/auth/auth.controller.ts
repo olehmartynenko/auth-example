@@ -18,7 +18,7 @@ export class AuthController {
 
   @Post('signup')
   async signUp(@Body() userData, @Res() res: Response): Promise<Response> {
-    const token = await this.authService.login(userData);
+    const token = await this.authService.signUp(userData);
     return res.set({ 'x-access-token': token }).send({ token });
   }
 }
