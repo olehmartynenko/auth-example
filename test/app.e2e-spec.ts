@@ -41,6 +41,10 @@ describe('App e2e', () => {
       name: 'Oleh',
     };
 
+    const auth: AuthDto = {
+      email: 'oleh@gmail.com',
+      password: '123',
+    };
     describe('Signup', () => {
       it('should throw if email empty', () => {
         return pactum
@@ -69,6 +73,38 @@ describe('App e2e', () => {
           .post('/auth/signup')
           .withBody(data)
           .expectStatus(201);
+      });
+    });
+
+    describe('Login', () => {
+      it('should throw if email empty', () => {
+        return pactum
+          .spec()
+          .post('/auth/login')
+          .withBody({
+            password: auth.password,
+          })
+          .expectStatus(400);
+      });
+      it('should throw if password empty', () => {
+        return pactum
+          .spec()
+          .post('/auth/login')
+          .withBody({
+            email: auth.email,
+          })
+          .expectStatus(400);
+      });
+      it('should throw if no body provided', () => {
+        return pactum.spec().post('/auth/login').expectStatus(400);
+      });
+      it('should login', () => {
+        return pactum
+          .spec()
+          .post('/auth/login')
+          .withBody(auth)
+          .expectStatus(200)
+          .stores('userToken', 'token');
       });
     });
   });
