@@ -32,16 +32,14 @@ export class AuthService {
     return this.signToken(user);
   }
 
-  async signUp(data: CreateUserDto): Promise<UserDto> {
+  async signUp(data: CreateUserDto): Promise<string> {
     const hashedPassword = await argon.hash(data.password);
     try {
       const user = await this.prisma.user.create({
         data: { ...data, password: hashedPassword },
       });
 
-      delete user.password;
-
-      return user;
+      return this.signToken(user);
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&
