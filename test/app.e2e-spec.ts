@@ -108,4 +108,17 @@ describe('App e2e', () => {
       });
     });
   });
+  describe('User', () => {
+    describe('Get me', () => {
+      it('should get current user', () => {
+        return pactum
+          .spec()
+          .get('/users/me')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .expectStatus(200);
+      });
+    });
+  });
 });
