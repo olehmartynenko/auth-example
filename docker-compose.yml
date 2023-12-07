@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  dev-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: test_db
+    ports:
+      - 5555:5432
