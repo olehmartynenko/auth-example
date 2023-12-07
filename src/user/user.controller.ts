@@ -22,10 +22,7 @@ export class UserController {
   }
 
   @Patch(':id')
-  editUser(
-    @Param('id') userId: number,
-    @Body() data: UpdateUserDto,
-  ): Promise<UserDto> {
-    return this.userService.editUser(userId, data);
+  updateUser(@Param('id') userId: number, @Body() dto: UpdateUserDto) {
+    return this.userService.updateUser(userId, dto);
   }
 }

@@ -26,11 +26,18 @@ export class UserService {
     return user;
   }
 
-  async editUser(userId: number, data: UpdateUserDto): Promise<UserDto> {
-    return {
-      id: userId,
-      email: data.email || '',
-      name: data.name || '',
-    };
+  async updateUser(userId: number, data: UpdateUserDto) {
+    const user = await this.prisma.user.update({
+      where: {
+        id: Number(userId),
+      },
+      data: {
+        ...data,
+      },
+    });
+
+    delete user.password;
+
+    return user;
   }
 }
