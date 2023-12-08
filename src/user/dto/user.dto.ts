@@ -1,14 +1,11 @@
-import { IsString, IsNotEmpty, IsEmail, IsNumber } from 'class-validator';
+import { Exclude } from 'class-transformer';
+import { IsNumber } from 'class-validator';
+import { CreateUserDto } from './create-user.dto';
 
-export class UserDto {
+export class UserDto extends CreateUserDto {
   @IsNumber()
   id: number;
 
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
+  @Exclude()
+  password: string;
 }
