@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AuthDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -47,6 +47,8 @@ export class AuthService {
         error.code === 'P2002'
       ) {
         throw new AuthException('User with this email already exists');
+      } else {
+        throw new InternalServerErrorException('Internal server error');
       }
     }
   }
