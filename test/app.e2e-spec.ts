@@ -117,6 +117,11 @@ describe('App e2e', () => {
           .withHeaders({
             Authorization: 'Bearer $S{userToken}',
           })
+          .expectJson({
+            id: 1,
+            email: 'oleh@gmail.com',
+            name: 'Oleh',
+          })
           .expectStatus(200);
       });
     });
@@ -134,9 +139,12 @@ describe('App e2e', () => {
             Authorization: 'Bearer $S{userToken}',
           })
           .withBody(data)
-          .expectStatus(200)
-          .expectBodyContains(data.name)
-          .expectBodyContains(data.email);
+          .expectJson({
+            id: 1,
+            name: 'Oleg',
+            email: 'oleg@gmail.com',
+          })
+          .expectStatus(200);
       });
     });
   });
